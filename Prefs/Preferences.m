@@ -34,7 +34,7 @@
     frame.origin.y = -frame.size.height;
         
     [self.navigationController.navigationController.navigationBar setShadowImage: [UIImage new]];
-    self.navigationController.navigationController.navigationBar.translucent = YES;
+//    self.navigationController.navigationController.navigationBar.translucent = YES;
 }
 
 - (void)resetPrefs:(id)sender {
