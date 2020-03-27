@@ -86,7 +86,7 @@ static const double xPi = M_PI  * 3000.0 / 180.0;
         self.dictionary = [(NSDictionary *)value mutableCopy];
         if (self.dictionary[@"Coordinate"]) {
             NSDictionary *coordinateDict = self.dictionary[@"Coordinate"];
-            CLLocationCoordinate2D coordinate = [self transformFromGCJToWGS:CLLocationCoordinate2DMake([coordinateDict[@"Latitude"] doubleValue], [coordinateDict[@"Longitude"] doubleValue])];
+            CLLocationCoordinate2D coordinate = [self transformFromWGSToGCJ:CLLocationCoordinate2DMake([coordinateDict[@"Latitude"] doubleValue], [coordinateDict[@"Longitude"] doubleValue])];
             [self.lpView createPinAt:coordinate];
         }
     }

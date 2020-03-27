@@ -1,4 +1,4 @@
-export THEOS_DEVICE_IP = 192.168.2.2
+export THEOS_DEVICE_IP = 192.168.2.24
 
 include $(THEOS)/makefiles/common.mk
 
