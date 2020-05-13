@@ -468,7 +468,7 @@ Boolean newSCNetworkReachabilityGetFlags(SCNetworkReachabilityRef target, SCNetw
     currentBSSID = [preferences objectForKey:@"BSSID"];
 	if(wifiEnable && [currentSSID length] && [currentBSSID length]) {
 		result = true;
-		*flags = kSCNetworkReachabilityFlagsIsWWAN;
+		*flags = kSCNetworkReachabilityFlagsReachable;
 	}
 
 	if(!result) {
