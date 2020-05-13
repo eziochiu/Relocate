@@ -23,6 +23,7 @@
         self.saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(save:)];
         self.saveButton.tintColor = [UIColor blackColor];
         self.navigationItem.rightBarButtonItem = self.saveButton;
+        [self refreshList];
     }
     return self;
 }
@@ -62,15 +63,6 @@
     }
     [_tableView reloadData];
     CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)@"me.nepeta.relocate/ReloadPrefs", nil, nil, true);
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear: animated];
-    [self refreshList];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
