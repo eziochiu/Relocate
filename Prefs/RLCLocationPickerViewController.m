@@ -15,10 +15,7 @@ static const double xPi = M_PI  * 3000.0 / 180.0;
         if ([self respondsToSelector:@selector(setView:)])
             [self performSelectorOnMainThread:@selector(setView:) withObject:self.lpView waitUntilDone:YES];      
 
-        self.saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" 
-                                    style:UIBarButtonItemStylePlain
-                                    target:self 
-                                    action:@selector(save:)];
+        self.saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(save:)];
         self.saveButton.tintColor = [UIColor blackColor];
         self.navigationItem.rightBarButtonItem = self.saveButton;
 

@@ -1,0 +1,30 @@
+{
+  "ENABLED" = "启用";
+
+  "GLOBAL" = "全局设置";
+  "APP" = "单独应用";
+  "APPLICATIONS" = "应用程序";
+  "WIFILIST" = "WIFI设置";
+  "LOCATION" = "定位";
+  "NO_GPS" = "非GPS模式";
+  "NO_GPS_INFO" = "禁用GPS，略微增加电池寿命，但虚拟定位可能不准确。";
+  "ENABLED_TOGGLE_INFO" = "上面的开关启用了此调整的所有功能。 如果禁用，您的位置将不会在任何地方更改。";
+
+  "GLOBAL_INFO" = "全局设置您的位置，即在所有应用程序中，除非在其他位置更改。";
+  "APP_INFO" = "独立于每个应用设置您的位置-不需要启用全局设置。";
+
+  "ADVANCED" = "高级";
+  "FAVORITES_MANAGER" = "收藏夹";
+  "SYSTEM_SERVICES" = "系统服务";
+
+  "WIFI" = "虚拟WIFI";
+  "VIRTUAL_WIFI_INFO" = "用于某些应用需要用获取WIFI的相关信息。";
+
+  "ARE_YOU_SURE_TO_RESET_PREFS" = "您确定要重设所有首选项吗？ 该操作不可逆转";
+  "OK" = "确定";
+  "CANCEL" = "取消";
+  "RESET_PREFS" = "恢复默认设置并注销";
+  "SOURCE_CODE" = "源代码";
+  "DONATE_TO_NEPETA" = "捐赠";
+  "SUPPORT_ME" = "支持";
+}

@@ -4,6 +4,8 @@
 <dict>
 	<key>items</key>
 	<array>
+
+		<!-- enable setting-->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -42,6 +44,7 @@
 			<string>me.nepeta.relocate/ReloadPrefs</string>
 		</dict>
 
+		<!-- GLOBAL setting -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -83,6 +86,7 @@
 			<string>me.nepeta.relocate/ReloadPrefs</string>
 		</dict>
 
+		<!-- APP setting -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -120,6 +124,7 @@
 			<string>APPLICATIONS</string>
 		</dict>
 
+		<!--no gps mod-->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -145,6 +150,45 @@
 			<string>me.nepeta.relocate/ReloadPrefs</string>
 		</dict>
 
+		<!-- WIFI -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>WIFI</string>
+			<key>footerText</key>
+			<string>VIRTUAL_WIFI_INFO</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>me.nepeta.relocate</string>
+			<key>label</key>
+			<string>ENABLED</string>
+			<key>key</key>
+			<string>WIFIEnable</string>
+			<key>alternateColors</key>
+			<true/>
+			<key>PostNotification</key>
+			<string>me.nepeta.relocate/ReloadPrefs</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>default</key>
+			<string></string>
+			<key>detail</key>
+			<string>RLCWIFISetting</string>
+			<key>defaults</key>
+			<string>me.nepeta.relocate</string>
+			<key>label</key>
+			<string>WIFILIST</string>
+		</dict>
+
+		<!-- ADVANCED -->
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
@@ -179,7 +223,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>Relocate by Nepeta</string>
+			<string>Relocate Remake by Ezio</string>
 			<key>isStaticText</key>
 			<true/>
 		</dict>

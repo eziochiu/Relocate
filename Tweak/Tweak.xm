@@ -2,6 +2,8 @@
 #import "Tweak.h"
 #import "RLCLocationManagerDelegate.h"
 #import "RLCAnalogStickWindow.h"
+#import <SystemConfiguration/CaptiveNetwork.h>
+#import <SystemConfiguration/SCNetworkReachability.h>
 
 #define PLIST_PATH @"/var/lib/dpkg/info/me.nepeta.relocate.list"
 
@@ -14,12 +16,15 @@ bool appEnabled;
 int currentAppEnabled;
 bool dpkgInvalid;
 bool noGPSMode;
+bool wifiEnable;
 bool managerInitialized;
 
 bool enabled;
 bool joystick;
 CLLocationCoordinate2D coordinate;
 NSDictionary *locationDict;
+NSString *currentSSID;
+NSString *currentBSSID;
 RLCAnalogStickWindow *analogStickWindow;
 
 @interface NSNull (Relocate)
@@ -415,6 +420,64 @@ RLCAnalogStickWindow *analogStickWindow;
 
 %end
 
+CFArrayRef (*oldCNCopySupportedInterfaces)();
+CFDictionaryRef (*oldCNCopyCurrentNetworkInfo)(CFStringRef interfaceName);
+Boolean (*oldSCNetworkReachabilityGetFlags)(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags *flags);
+
+CFArrayRef newCNCopySupportedInterfaces() {
+	CFArrayRef result = NULL;
+    currentSSID = [preferences objectForKey:@"SSID"];
+    currentBSSID = [preferences objectForKey:@"BSSID"];
+	if(wifiEnable && [currentSSID length] && [currentBSSID length]) {
+		NSArray *array = [NSArray arrayWithObject:@"en0"];
+		result = (CFArrayRef)CFRetain((__bridge CFArrayRef)(array));
+	}
+
+	if(!result) {
+		result = oldCNCopySupportedInterfaces();
+	}
+
+	return result;
+}
+
+CFDictionaryRef newCNCopyCurrentNetworkInfo(CFStringRef interfaceName) {
+	CFDictionaryRef result = NULL;
+
+	currentSSID = [preferences objectForKey:@"SSID"];
+    currentBSSID = [preferences objectForKey:@"BSSID"];
+	if(wifiEnable && [currentSSID length] && [currentBSSID length]) {
+		NSDictionary *dictionary = @{
+		    @"BSSID": currentBSSID,
+			@"SSID": currentSSID,
+		    @"SSIDDATA": [currentSSID dataUsingEncoding:NSUTF8StringEncoding],
+		};
+		result = (CFDictionaryRef)CFRetain((__bridge CFDictionaryRef)(dictionary));
+	}
+
+	if(!result) {
+		result = oldCNCopyCurrentNetworkInfo(interfaceName);
+	}
+
+	return result;
+}
+
+Boolean newSCNetworkReachabilityGetFlags(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags *flags) {
+	Boolean result = false;
+	
+	currentSSID = [preferences objectForKey:@"SSID"];
+    currentBSSID = [preferences objectForKey:@"BSSID"];
+	if(wifiEnable && [currentSSID length] && [currentBSSID length]) {
+		result = true;
+		*flags = kSCNetworkReachabilityFlagsIsWWAN;
+	}
+
+	if(!result) {
+		result = oldSCNetworkReachabilityGetFlags(target, flags);
+	}
+
+	return result;
+}
+
 %ctor {
     dpkgInvalid = ![[NSFileManager defaultManager] fileExistsAtPath:PLIST_PATH];
 
@@ -469,6 +532,7 @@ RLCAnalogStickWindow *analogStickWindow;
     [preferences registerBool:&globalNoGPS default:NO forKey:@"GlobalNoGPS"];
     [preferences registerBool:&appEnabled default:YES forKey:@"AppEnabled"];
     [preferences registerBool:&rlcEnabled default:YES forKey:@"Enabled"];
+    [preferences registerBool:&wifiEnable default:NO forKey:@"WIFIEnable"];
 
     enabled = NO;
     joystick = NO;
@@ -476,6 +540,8 @@ RLCAnalogStickWindow *analogStickWindow;
     currentAppEnabled = 0;
     coordinate = CLLocationCoordinate2DMake(0,0);
     locationDict = @{};
+    currentSSID = @"";
+    currentBSSID = @"";
     managerInitialized = NO;
 
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
@@ -490,8 +556,8 @@ RLCAnalogStickWindow *analogStickWindow;
         if (!rlcEnabled) return;
         
         noGPSMode = globalNoGPS;
-        currentAppEnabled = [[preferences objectForKey:[NSString stringWithFormat:@"App_%@_Enabled", bundleIdentifier]] intValue];
 
+        currentAppEnabled = [[preferences objectForKey:[NSString stringWithFormat:@"App_%@_Enabled", bundleIdentifier]] intValue];
         if (globalEnabled) {
             enabled = YES;
             locationDict = [preferences objectForKey:@"GlobalLocation"];
@@ -522,4 +588,7 @@ RLCAnalogStickWindow *analogStickWindow;
     }];
 
     %init(Relocate);
+    MSHookFunction(&CNCopySupportedInterfaces, &newCNCopySupportedInterfaces, &oldCNCopySupportedInterfaces);
+    MSHookFunction(&CNCopyCurrentNetworkInfo, &newCNCopyCurrentNetworkInfo, &oldCNCopyCurrentNetworkInfo);
+    MSHookFunction(&SCNetworkReachabilityGetFlags, &newSCNetworkReachabilityGetFlags, &oldSCNetworkReachabilityGetFlags);
 }

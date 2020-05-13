@@ -36,8 +36,8 @@ static UIImage *defaultImage;
         if ([self respondsToSelector:@selector(setView:)])
             [self performSelectorOnMainThread:@selector(setView:) withObject:_tableView waitUntilDone:YES];
 
-        [self setTitle:@"Applications"];
-        [self.navigationItem setTitle:@"Applications"];
+        [self setTitle:[[NSBundle mainBundle] localizedStringForKey:@"APPLICATIONS" value:@"" table:nil]];
+        [self.navigationItem setTitle:[[NSBundle mainBundle] localizedStringForKey:@"APPLICATIONS" value:@"" table:nil]];
     }
 
     return self;
