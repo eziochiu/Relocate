@@ -22,10 +22,6 @@
     self.helpView = [[RLCHelpView alloc] initWithFrame:frame];
     self.helpView.text = @"Long press on the map to select a location,\n\"Save\" to confirm your choice.";
 
-    self.currentLocationBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.currentLocationBtn addTarget:self action:@selector(getCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
-    [self.currentLocationBtn setImage:[[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/RelocatePrefs.bundle/current.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-
     self.savedLocationBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.savedLocationBtn addTarget:self action:@selector(getSavedLocation) forControlEvents:UIControlEventTouchUpInside];
     [self.savedLocationBtn setImage:[[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/RelocatePrefs.bundle/savedLo.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -34,14 +30,12 @@
     [self addSubview:self.mapView];
     [self addSubview:self.helpView];
     [self addSubview:self.overlayView];
-    [self addSubview:self.currentLocationBtn];
     [self addSubview:self.savedLocationBtn];
     [self addSubview:self.advancedSettingsView];
 
     self.mapView.translatesAutoresizingMaskIntoConstraints = NO;
     self.helpView.translatesAutoresizingMaskIntoConstraints = NO;
     self.overlayView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.currentLocationBtn.translatesAutoresizingMaskIntoConstraints = NO;
     self.savedLocationBtn.translatesAutoresizingMaskIntoConstraints = NO;
     self.advancedSettingsView.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -79,14 +73,7 @@
         [self.advancedSettingsView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
         self.advancedSettingsViewHeightConstraintHidden
     ]];
-
-    [NSLayoutConstraint activateConstraints:@[
-        [self.currentLocationBtn.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-70],
-        [self.currentLocationBtn.leadingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-30],
-        [self.currentLocationBtn.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-10],
-        [self.currentLocationBtn.heightAnchor constraintEqualToConstant:20],
-    ]];
-
+    
     [NSLayoutConstraint activateConstraints:@[
         [self.savedLocationBtn.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-70],
         [self.savedLocationBtn.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:10],
@@ -111,11 +98,6 @@
             options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.helpView.alpha = 0.0;
     } completion:NULL];
-}
-
-- (void)getCurrentLocation {
-    // [self.locationManager startUpdatingLocation];
-    // NSLog(@"hahahaha");
 }
 
 - (void)getSavedLocation {
