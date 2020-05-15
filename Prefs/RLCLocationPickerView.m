@@ -12,6 +12,7 @@
     self.overlayView.alpha = 0.0;
     
     self.mapView = [[MKMapView alloc] initWithFrame:frame];
+    self.mapView.showsUserLocation = YES;
     self.mapView.delegate = self;
 
     self.advancedSettingsView = [[RLCLocationPickerAdvancedSettingsView alloc] initWithFrame:frame controller:controller];
@@ -21,14 +22,27 @@
     self.helpView = [[RLCHelpView alloc] initWithFrame:frame];
     self.helpView.text = @"Long press on the map to select a location,\n\"Save\" to confirm your choice.";
 
+    self.currentLocationBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.currentLocationBtn addTarget:self action:@selector(getCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
+    [self.currentLocationBtn setImage:[[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/RelocatePrefs.bundle/current.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+
+    self.savedLocationBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.savedLocationBtn addTarget:self action:@selector(getSavedLocation) forControlEvents:UIControlEventTouchUpInside];
+    [self.savedLocationBtn setImage:[[UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/RelocatePrefs.bundle/savedLo.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+
+
     [self addSubview:self.mapView];
     [self addSubview:self.helpView];
     [self addSubview:self.overlayView];
+    [self addSubview:self.currentLocationBtn];
+    [self addSubview:self.savedLocationBtn];
     [self addSubview:self.advancedSettingsView];
 
     self.mapView.translatesAutoresizingMaskIntoConstraints = NO;
     self.helpView.translatesAutoresizingMaskIntoConstraints = NO;
     self.overlayView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.currentLocationBtn.translatesAutoresizingMaskIntoConstraints = NO;
+    self.savedLocationBtn.translatesAutoresizingMaskIntoConstraints = NO;
     self.advancedSettingsView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [NSLayoutConstraint activateConstraints:@[
@@ -66,6 +80,20 @@
         self.advancedSettingsViewHeightConstraintHidden
     ]];
 
+    [NSLayoutConstraint activateConstraints:@[
+        [self.currentLocationBtn.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-70],
+        [self.currentLocationBtn.leadingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-30],
+        [self.currentLocationBtn.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-10],
+        [self.currentLocationBtn.heightAnchor constraintEqualToConstant:20],
+    ]];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [self.savedLocationBtn.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-70],
+        [self.savedLocationBtn.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:10],
+        [self.savedLocationBtn.widthAnchor constraintEqualToConstant:20],
+        [self.savedLocationBtn.heightAnchor constraintEqualToConstant:20],
+    ]];
+
     return self;
 }
 
@@ -83,6 +111,18 @@
             options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.helpView.alpha = 0.0;
     } completion:NULL];
+}
+
+- (void)getCurrentLocation {
+
+}
+
+- (void)getSavedLocation {
+    if (self.coordinate.longitude > 0 && self.coordinate.latitude > 0) {
+        [self createPinAt:self.coordinate];
+        MKCoordinateSpan span = MKCoordinateSpanMake(0.021251, 0.016093);
+        [self.mapView setRegion:MKCoordinateRegionMake(self.coordinate, span) animated:YES];
+    }
 }
 
 -(void)layoutSubviews {

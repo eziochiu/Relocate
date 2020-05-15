@@ -8,10 +8,13 @@
 
 @property (nonatomic, retain) UITableView *searchResultsView;
 @property (nonatomic, retain) MKMapView *mapView;
+@property (nonatomic, retain) UIButton *savedLocationBtn;
+@property (nonatomic, retain) UIButton *currentLocationBtn;
 @property (nonatomic, retain) RLCHelpView *helpView;
 @property (nonatomic, retain) UIView *overlayView;
 @property (nonatomic, retain) MKPointAnnotation *pin;
 @property (nonatomic, retain) UILongPressGestureRecognizer *longPressRecognizer;
+@property (nonatomic) CLLocationCoordinate2D coordinate;
 
 @property (nonatomic, retain) RLCLocationPickerAdvancedSettingsView *advancedSettingsView;
 @property (nonatomic, retain) NSLayoutConstraint *advancedSettingsViewHeightConstraintVisible;

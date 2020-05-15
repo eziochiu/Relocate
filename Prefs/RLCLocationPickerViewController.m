@@ -84,7 +84,10 @@ static const double xPi = M_PI  * 3000.0 / 180.0;
         if (self.dictionary[@"Coordinate"]) {
             NSDictionary *coordinateDict = self.dictionary[@"Coordinate"];
             CLLocationCoordinate2D coordinate = [self transformFromWGSToGCJ:CLLocationCoordinate2DMake([coordinateDict[@"Latitude"] doubleValue], [coordinateDict[@"Longitude"] doubleValue])];
+            self.lpView.coordinate = coordinate;
             [self.lpView createPinAt:coordinate];
+            MKCoordinateSpan span = MKCoordinateSpanMake(0.021251, 0.016093);
+            [self.lpView.mapView setRegion:MKCoordinateRegionMake(coordinate, span) animated:YES];
         }
     }
 }
