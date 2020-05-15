@@ -114,7 +114,8 @@
 }
 
 - (void)getCurrentLocation {
-
+    // [self.locationManager startUpdatingLocation];
+    // NSLog(@"hahahaha");
 }
 
 - (void)getSavedLocation {

@@ -7,7 +7,7 @@
 #import "RLCLocationPickerView.h"
 #import "RLCLocationPickerSearchResultsViewController.h"
 
-@interface RLCLocationPickerViewController : PSViewController <UISearchBarDelegate>
+@interface RLCLocationPickerViewController : PSViewController <UISearchBarDelegate,RLCLocationManagerDelegate>
 
 @property (nonatomic, retain) UISearchController *searchController;
 @property (nonatomic, retain) RLCLocationPickerSearchResultsViewController *searchResultsController;
@@ -15,6 +15,7 @@
 @property (nonatomic, retain) RLCLocationPickerView *lpView;
 @property (nonatomic, retain) NSMutableArray *favorites;
 @property (nonatomic, retain) NSMutableDictionary *dictionary;
+@property (nonatomic, retain) CLLocationManager *locationManager;
 -(void)save:(id)sender;
 -(void)updateSavedFavorites;
 

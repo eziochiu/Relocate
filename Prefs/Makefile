@@ -6,7 +6,7 @@ include $(THEOS)/makefiles/common.mk
 BUNDLE_NAME = RelocatePrefs
 $(BUNDLE_NAME)_FILES = Preferences.m SystemServices.m $(wildcard RLC*.m)
 $(BUNDLE_NAME)_INSTALL_PATH = /Library/PreferenceBundles
-$(BUNDLE_NAME)_FRAMEWORKS = UIKit MapKit QuartzCore
+$(BUNDLE_NAME)_FRAMEWORKS = UIKit MapKit QuartzCore CoreLocation
 $(BUNDLE_NAME)_LIBRARIES = applist
 $(BUNDLE_NAME)_PRIVATE_FRAMEWORKS = Preferences
 $(BUNDLE_NAME)_EXTRA_FRAMEWORKS = Cephei CepheiPrefs

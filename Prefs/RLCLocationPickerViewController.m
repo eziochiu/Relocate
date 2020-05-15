@@ -1,4 +1,5 @@
 #import "RLCLocationPickerViewController.h"
+#import "RLCLocationManagerDelegate.h"
 
 static const double a = 6378245.0;
 static const double ee = 0.00669342162296594323;
@@ -57,9 +58,35 @@ static const double xPi = M_PI  * 3000.0 / 180.0;
                     self.lpView.mapView.mapType = MKMapTypeStandard;
             }
         }
+
+    if ([CLLocationManager locationServicesEnabled]) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        [self.locationManager requestWhenInUseAuthorization];
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        self.locationManager.distanceFilter = 5.0;
+        [self.locationManager startUpdatingLocation];
+    }
     }
 
     return self;
+}
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"😡😡😡" message:@"可用" preferredStyle:UIAlertControllerStyleAlert
+    ];
+
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Damn!" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+    }]];
+
+    [self presentViewController:alertController animated:YES completion:NULL];
+    [self.locationManager stopUpdatingHeading];
+    CLLocation *userLocation = [locations lastObject];
+    [self.lpView createPinAt:userLocation.coordinate];
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.021251, 0.016093);
+    MKCoordinateRegion regoin = MKCoordinateRegionMake(userLocation.coordinate, span);
+    [self.lpView.mapView setRegion:regoin animated:YES];
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
@@ -86,10 +113,12 @@ static const double xPi = M_PI  * 3000.0 / 180.0;
             CLLocationCoordinate2D coordinate = [self transformFromWGSToGCJ:CLLocationCoordinate2DMake([coordinateDict[@"Latitude"] doubleValue], [coordinateDict[@"Longitude"] doubleValue])];
             self.lpView.coordinate = coordinate;
             [self.lpView createPinAt:coordinate];
-            MKCoordinateSpan span = MKCoordinateSpanMake(0.021251, 0.016093);
-            [self.lpView.mapView setRegion:MKCoordinateRegionMake(coordinate, span) animated:YES];
         }
     }
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [self.lpView getSavedLocation];
 }
 
 - (NSString*)navigationTitle {

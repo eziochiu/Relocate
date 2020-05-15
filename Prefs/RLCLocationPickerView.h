@@ -1,4 +1,5 @@
 #import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 #import "RLCLocationPickerAdvancedSettingsView.h"
 #import "RLCHelpView.h"
 
@@ -15,6 +16,7 @@
 @property (nonatomic, retain) MKPointAnnotation *pin;
 @property (nonatomic, retain) UILongPressGestureRecognizer *longPressRecognizer;
 @property (nonatomic) CLLocationCoordinate2D coordinate;
+@property (nonatomic, retain) CLLocationManager *locationManager;
 
 @property (nonatomic, retain) RLCLocationPickerAdvancedSettingsView *advancedSettingsView;
 @property (nonatomic, retain) NSLayoutConstraint *advancedSettingsViewHeightConstraintVisible;
@@ -25,5 +27,5 @@
 -(void)createPinAt:(CLLocationCoordinate2D)coord;
 -(void)showHelpView;
 -(void)hideHelpView;
-
+- (void)getSavedLocation;
 @end
